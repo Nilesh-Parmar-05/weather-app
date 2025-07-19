@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   transition: all 0.5s ease-in-out;
 }
 
@@ -144,13 +144,15 @@
   text-align: center;
   color: #fff;
   font-size: 1.2em;
-  margin-top: 20px;
+  margin: 20px auto;
   padding: 20px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   animation: pulse 2s infinite;
+  max-width: 1200px;
+  width: calc(100% - 40px);
 }
 
 @keyframes pulse {
@@ -167,29 +169,34 @@
   text-align: center;
   color: #ff6b6b;
   font-size: 1.1em;
-  margin-top: 20px;
+  margin: 20px auto;
   padding: 15px;
   background: rgba(255, 107, 107, 0.15);
   border-radius: 15px;
   border: 1px solid rgba(255, 107, 107, 0.3);
   backdrop-filter: blur(10px);
+  max-width: 1200px;
+  width: calc(100% - 40px);
 }
 
 .weather-content {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  width: 100%;
-  min-height: calc(100vh - 220px);
+  width: 100vw;
   gap: 20px;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-  padding: 120px 20px 80px 20px;
+  padding: 120px 0 80px 0;
   box-sizing: border-box;
-  overflow-y: auto;
+}
+
+.weather-content > * {
   max-width: 1200px;
   margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: calc(100% - 40px);
 }
 
 .weather-app-container.active .weather-content {
@@ -284,8 +291,14 @@
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
   .weather-content {
-    padding: 100px 15px 80px 15px;
+    padding: 100px 0 80px 0;
     gap: 15px;
+  }
+
+  .weather-content > * {
+    padding-left: 15px;
+    padding-right: 15px;
+    width: calc(100% - 30px);
   }
 
   .weather-card,
@@ -327,6 +340,13 @@
     align-items: flex-start;
     gap: 4px;
   }
+
+  .loading-message,
+  .error-message {
+    width: calc(100% - 30px);
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -345,8 +365,14 @@
   }
 
   .weather-content {
-    padding: 80px 10px 80px 10px;
+    padding: 80px 0 80px 0;
     gap: 12px;
+  }
+
+  .weather-content > * {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: calc(100% - 20px);
   }
 
   .weather-app-container.active .search-container {
@@ -367,6 +393,13 @@
   .suggestions-list li {
     padding: 10px 16px;
     font-size: 0.9em;
+  }
+
+  .loading-message,
+  .error-message {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 /* Footer Styles */
@@ -465,25 +498,7 @@
   border-radius: 3px;
 }
 
-/* Weather Content Scrollbar */
-.weather-content::-webkit-scrollbar {
-  width: 10px;
-}
-
-.weather-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
-}
-
-.weather-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.weather-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+/* Browser Main Scrollbar - will use the global * styles defined above */
 
 /* Modern Weather Components Styles */
 
