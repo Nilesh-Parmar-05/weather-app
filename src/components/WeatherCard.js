@@ -18,7 +18,7 @@ const WeatherCard = ({ weather }) => {
       <h2>{name}</h2>
       <div className="weather-info">
         <img
-          src={`http://openweathermap.org/img/wn/${icon}.png`}
+          src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
           alt={description}
         />
         <p className="temperature">{temp}°C</p>

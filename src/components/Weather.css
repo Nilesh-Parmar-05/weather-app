@@ -1,78 +1,137 @@
-
 /* src/components/Weather.css */
 
-.weather-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  text-align: center;
-  font-family: Arial, sans-serif;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+.weather-app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s ease-in-out;
+}
+
+.search-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+  z-index: 1001;
+}
+
+.weather-app-container.active .search-container {
+  top: 40px;
+  left: 40px;
+  transform: translate(0, 0);
+  align-items: flex-start;
+}
+
+.search-container h1 {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.weather-app-container.active .search-container h1 {
+  opacity: 0;
+  height: 0;
+  margin: 0;
 }
 
 .search-bar {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
   position: relative;
 }
 
 .search-bar input {
-  padding: 10px;
-  width: 70%;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 15px;
+  width: 400px;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ecf0f1;
+  font-size: 1.1em;
+  outline: none;
+  transition: background 0.3s;
+}
+
+.search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-bar input:focus {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .search-bar button {
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
-  background-color: #007bff;
+  background-color: #4ca1af;
   color: white;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
+  margin-left: -45px;
+  transition: background-color 0.3s;
 }
 
 .search-bar button:hover {
-  background-color: #0056b3;
+  background-color: #5cc9d7;
 }
 
 .suggestions-list {
   position: absolute;
-  top: 100%;
+  top: 110%;
   left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-top: none;
+  width: 400px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
   list-style: none;
   margin: 0;
   padding: 0;
   z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
 }
-
-.suggestions-list li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.suggestions-list li:hover {
-  background-color: #f0f0f0;
-}
-
 
 .error {
-  color: red;
+  color: #ff6b6b;
   margin-top: 10px;
+  text-align: center;
+}
+
+.weather-content {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  height: calc(100vh - 220px); /* More space for footer */
+  justify-content: space-between;
+  gap: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  padding: 120px 20px 40px 20px; /* Added bottom padding for spacing */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.weather-app-container.active .weather-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .weather-card {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
+  flex: 0 0 45%; /* Fixed width to ensure both cards fit */
+  max-width: 45%;
+  padding: 15px; /* Reduced padding */
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 280px); /* Fixed height to prevent footer overlap */
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
 }
 
 .weather-info {
@@ -80,65 +139,192 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .weather-info img {
-  width: 100px;
-  height: 100px;
+  width: 100px; /* Reduced size */
+  height: 100px; /* Reduced size */
 }
 
 .temperature {
-  font-size: 2em;
-  margin: 10px 0;
+  font-size: 2.2em; /* Reduced size */
+  margin: 8px 0; /* Reduced margin */
 }
 
 .description {
   text-transform: capitalize;
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Reduced margin */
+  font-size: 1.1em; /* Reduced size */
 }
 
 .forecast-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+  flex: 0 0 45%; /* Fixed width to ensure both cards fit */
+  max-width: 45%;
+  padding: 15px; /* Reduced padding */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 280px); /* Fixed height to prevent footer overlap */
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
 }
 
-.forecast-cards-container {
-  display: flex;
-  justify-content: space-between; /* Distribute space evenly */
-  gap: 5px; /* Further reduced gap */
+.forecast-section h2 {
+  margin-top: 0;
+  margin-bottom: 15px; /* Reduced margin */
+  font-size: 1.4em; /* Reduced size */
 }
 
 .forecast-card {
-  flex: 1;
-  min-width: 80px; /* Adjusted min-width to account for padding and border */
-  max-width: 90px; /* Adjusted max-width to account for padding and border */
-  padding: 8px; /* Reduced padding */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px; /* Reduced padding */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px; /* Slightly smaller radius */
+  text-align: left;
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+.forecast-card:last-child {
+  margin-bottom: 0;
 }
 
 .forecast-card h3 {
-  font-size: 0.9em;
-  margin-bottom: 5px;
-  color: #333;
+  font-size: 1.1em;
+  margin: 0;
 }
 
 .forecast-card img {
-  width: 40px;
-  height: 40px;
+  width: 50px; /* Reduced size */
+  height: 50px; /* Reduced size */
 }
 
 .forecast-card .temperature {
-  font-size: 1em;
+  font-size: 1.1em; /* Reduced size */
   font-weight: bold;
-  margin: 3px 0;
+  margin: 0;
 }
 
 .forecast-card .description {
-  font-size: 0.7em;
-  color: #666;
+  font-size: 0.85em; /* Reduced size */
+  color: #bdc3c7;
+  margin: 0;
+}
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .weather-content {
+    flex-direction: column;
+    height: calc(100vh - 180px); /* Account for footer */
+    gap: 12px;
+    padding: 100px 15px 30px 15px; /* Added bottom padding */
+  }
+
+  .weather-card,
+  .forecast-section {
+    flex: 1;
+    max-width: 100%;
+    height: calc(45vh - 90px); /* Fixed height for mobile */
+    max-height: calc(45vh - 90px);
+    padding: 12px; /* Reduced padding */
+  }
+
+  .search-bar input {
+    width: 300px;
+  }
+
+  .weather-app-container.active .search-container {
+    top: 20px;
+    left: 20px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    font-size: 0.75em;
+  }
+
+  .footer .links {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar input {
+    width: 250px;
+  }
+
+  .weather-content {
+    padding: 80px 10px 25px 10px; /* Added bottom padding */
+    height: calc(100vh - 160px); /* More space for footer */
+  }
+
+  .weather-app-container.active .search-container {
+    top: 10px;
+    left: 10px;
+  }
+
+  .weather-card,
+  .forecast-section {
+    padding: 10px; /* Further reduced padding */
+    height: calc(42vh - 80px); /* Even smaller for very small screens */
+    max-height: calc(42vh - 80px);
+  }
+
+  .footer .links a {
+    font-size: 0.7em;
+    padding: 3px 6px;
+  }
+}
+/* Footer Styles */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 12px 20px; /* Reduced padding */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Reduced gap */
+  color: #ecf0f1;
+  font-size: 0.85em; /* Reduced font size */
+  z-index: 1000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer .developer-name {
+  font-weight: bold;
+  color: #4ca1af;
+}
+
+.footer .links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer .links a {
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  font-size: 0.85em;
+}
+
+.footer .links a:hover {
+  background: rgba(76, 161, 175, 0.3);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer .separator {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 5px;
 }

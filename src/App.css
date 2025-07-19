@@ -1,13 +1,11 @@
 /* src/App.css */
 
 .App {
-  text-align: center;
-  background-color: #f0f2f5;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: #333;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent any scrolling at the app level */
 }

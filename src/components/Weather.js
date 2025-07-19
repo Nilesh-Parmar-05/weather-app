@@ -16,6 +16,7 @@ const Weather = () => {
   // State to handle errors
   const [error, setError] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [forecast, setForecast] = useState([]); // New state for forecast
 
   // API key for OpenWeatherMap
@@ -31,9 +32,7 @@ const Weather = () => {
     }
     setLoading(true);
     setError(null);
-    setWeather(null);
-    setForecast([]); // Clear previous forecast
-    setSuggestions([]); // Clear suggestions
+
     try {
       const weatherResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${weatherApiKey}&units=metric`
@@ -53,7 +52,7 @@ const Weather = () => {
         throw new Error('Forecast data not found');
       }
       const forecastData = await forecastResponse.json();
-      // Filter for next 3 days (one entry per day around noon)
+      // Filter for next 5 days (one entry per day around noon)
       const dailyForecasts = {};
       forecastData.list.forEach(item => {
         const date = new Date(item.dt * 1000).toLocaleDateString();
@@ -65,6 +64,9 @@ const Weather = () => {
 
     } catch (error) {
       setError(error.message);
+      // If the new search fails, clear the old data to reset the UI
+      setWeather(null);
+      setForecast([]);
     } finally {
       setLoading(false);
     }
@@ -90,60 +92,93 @@ const Weather = () => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setCity(value);
-    fetchSuggestions(value);
+    if (value.length > 2) {
+      fetchSuggestions(value);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
   };
 
   const handleSuggestionClick = (suggestion) => {
     const selectedCity = suggestion.properties.city;
     setCity(selectedCity);
     setSuggestions([]);
+    setShowSuggestions(false);
     fetchWeather(selectedCity);
+  };
+
+  const handleSearch = () => {
+    fetchWeather(city);
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
 
 
   return (
-    <div className="weather-container">
-      <h1>Weather Forecast</h1>
-      <div className="search-bar">
-        <input
-          type="text"
-          value={city}
-          onChange={handleInputChange}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              fetchWeather(city);
-            }
-          }}
-          placeholder="Enter city"
-        />
-        <button onClick={() => fetchWeather(city)}>Get Weather</button>
-        {suggestions.length > 0 && (
-          <ul className="suggestions-list">
-            {suggestions.map((suggestion) => (
-              <li
-                key={suggestion.properties.place_id}
-                onClick={() => handleSuggestionClick(suggestion)}
-              >
-                {suggestion.properties.formatted}
-              </li>
-            ))}
-          </ul>
-        )}
+    <div className={`weather-app-container ${weather ? 'active' : ''}`}>
+      <div className="search-container">
+        <h1>Weather Forecast</h1>
+        <div className="search-bar">
+          <input
+            type="text"
+            value={city}
+            onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
+            placeholder="Enter city"
+          />
+          <button onClick={handleSearch}>Get Weather</button>
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="suggestions-list">
+              {suggestions.map((suggestion) => (
+                <li
+                  key={suggestion.properties.place_id}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  {suggestion.properties.formatted}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
-      {weather && <WeatherCard weather={weather} />}
 
-      {forecast.length > 0 && (
-        <div className="forecast-section">
-          <h2>5-Day Forecast</h2>
-          <div className="forecast-cards-container">
+      {loading && <p className="loading-message">Loading...</p>}
+      {error && <p className="error-message">{error}</p>}
+      
+      <div className="weather-content">
+        {weather && <WeatherCard weather={weather} />}
+        {forecast.length > 0 && (
+          <div className="forecast-section">
+            <h2>5-Day Forecast</h2>
             {forecast.map((dayForecast) => (
               <ForecastCard key={dayForecast.dt} forecast={dayForecast} />
             ))}
           </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="footer">
+        <span className="developer-name">Nilesh Paarmar</span>
+        <span className="separator">|</span>
+        <div className="links">
+          <a href="https://your-portfolio-link.com" target="_blank" rel="noopener noreferrer">
+            Portfolio
+          </a>
+          <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
         </div>
-      )}
+      </div>
     </div>
   );
 };
