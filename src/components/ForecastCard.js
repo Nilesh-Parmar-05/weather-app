@@ -13,8 +13,9 @@ const ForecastCard = ({ forecast }) => {
     <div className="forecast-card">
       <h3>{date}</h3>
       <img
-        src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+        src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
         alt={description}
+        loading="lazy"
       />
       <p className="temperature">{temp}°C</p>
       <p className="description">{description}</p>
