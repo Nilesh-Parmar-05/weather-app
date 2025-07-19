@@ -1,24 +1,35 @@
 // src/components/WeatherDetails.js
 
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEye, 
-  faThermometerHalf, 
-  faWind, 
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faThermometerHalf,
+  faWind,
   faTint,
   faCompass,
-  faCloudRain
-} from '@fortawesome/free-solid-svg-icons';
+  faCloudRain,
+  faArrowUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const WeatherDetails = ({ weather }) => {
-  const getWindDirection = (degrees) => {
-    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-    return directions[Math.round(degrees / 22.5) % 16];
+  const getWindDirectionIcon = (degrees) => {
+    return (
+      <FontAwesomeIcon 
+        icon={faArrowUp} 
+        style={{ 
+          transform: `rotate(${degrees}deg)`,
+          color: '#4ca1af',
+          fontSize: '14px'
+        }} 
+      />
+    );
   };
 
   const formatVisibility = (visibility) => {
-    return visibility >= 1000 ? `${(visibility / 1000).toFixed(1)} km` : `${visibility} m`;
+    return visibility >= 1000
+      ? `${(visibility / 1000).toFixed(1)} km`
+      : `${visibility} m`;
   };
 
   return (
@@ -27,7 +38,9 @@ const WeatherDetails = ({ weather }) => {
         <FontAwesomeIcon icon={faThermometerHalf} className="detail-icon" />
         <div className="detail-info">
           <p className="detail-label">Feels like</p>
-          <p className="detail-value">{Math.round(weather.main.feels_like)}°C</p>
+          <p className="detail-value">
+            {Math.round(weather.main.feels_like)}°C
+          </p>
         </div>
       </div>
 
@@ -35,8 +48,11 @@ const WeatherDetails = ({ weather }) => {
         <FontAwesomeIcon icon={faWind} className="detail-icon" />
         <div className="detail-info">
           <p className="detail-label">Wind</p>
-          <p className="detail-value">
-            {weather.wind.speed} m/s {getWindDirection(weather.wind.deg)}
+          <p className="detail-value wind-value">
+            {weather.wind.speed} m/s 
+            <span className="wind-direction">
+              {getWindDirectionIcon(weather.wind.deg)}
+            </span>
           </p>
         </div>
       </div>
@@ -70,7 +86,7 @@ const WeatherDetails = ({ weather }) => {
           <FontAwesomeIcon icon={faCloudRain} className="detail-icon" />
           <div className="detail-info">
             <p className="detail-label">Rain (1h)</p>
-            <p className="detail-value">{weather.rain['1h'] || 0} mm</p>
+            <p className="detail-value">{weather.rain["1h"] || 0} mm</p>
           </div>
         </div>
       )}

@@ -20,13 +20,14 @@ const WeatherCard = ({ weather, uvIndex, aqi }) => {
         <div className="location-time">
           <h2>{name}</h2>
           <p className="current-time">
-            {new Date().toLocaleString('en-US', {
+            {new Date().toLocaleString('en-IN', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
               day: 'numeric',
               hour: '2-digit',
-              minute: '2-digit'
+              minute: '2-digit',
+              hour12: true
             })}
           </p>
         </div>

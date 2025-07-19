@@ -7,9 +7,10 @@ import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 const SunriseSunset = ({ sunrise, sunset, timezone }) => {
   const formatTime = (timestamp) => {
     const date = new Date((timestamp + timezone) * 1000);
-    return date.toLocaleTimeString("en-US", {
+    return date.toLocaleTimeString("en-IN", {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: true,
       timeZone: "UTC",
     });
   };

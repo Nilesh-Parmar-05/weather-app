@@ -9,7 +9,7 @@ const HourlyForecast = ({ hourlyData }) => {
 
   const formatHour = (timestamp) => {
     const date = new Date(timestamp * 1000);
-    return date.toLocaleTimeString('en-US', { 
+    return date.toLocaleTimeString('en-IN', { 
       hour: 'numeric',
       hour12: true 
     });

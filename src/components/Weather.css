@@ -106,21 +106,73 @@
   top: 110%;
   left: 0;
   width: 400px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
   border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 8px 0;
   z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.suggestions-list li {
+  padding: 12px 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95em;
+  border-radius: 8px;
+  margin: 2px 8px;
+}
+
+.suggestions-list li:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
 }
 
 .error {
   color: #ff6b6b;
   margin-top: 10px;
   text-align: center;
+}
+
+.loading-message {
+  text-align: center;
+  color: #fff;
+  font-size: 1.2em;
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.error-message {
+  text-align: center;
+  color: #ff6b6b;
+  font-size: 1.1em;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 107, 107, 0.15);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .weather-content {
@@ -245,6 +297,10 @@
     width: 250px;
   }
 
+  .suggestions-list {
+    width: 250px;
+  }
+
   .gps-button {
     padding: 12px 16px !important;
     font-size: 1.1em !important;
@@ -265,10 +321,20 @@
   .footer .links {
     gap: 8px;
   }
+
+  .wind-value {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
 
 @media (max-width: 480px) {
   .search-bar input {
+    width: 200px;
+  }
+
+  .suggestions-list {
     width: 200px;
   }
 
@@ -296,6 +362,11 @@
   .footer .links a {
     font-size: 0.7em;
     padding: 3px 6px;
+  }
+
+  .suggestions-list li {
+    padding: 10px 16px;
+    font-size: 0.9em;
   }
 }
 /* Footer Styles */
@@ -347,6 +418,73 @@
   color: rgba(255, 255, 255, 0.5);
   margin: 0 5px;
 }
+/* Modern Scrollbar Styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Suggestions List Scrollbar */
+.suggestions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+
+/* Weather Content Scrollbar */
+.weather-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.weather-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+}
+
+.weather-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.weather-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 /* Modern Weather Components Styles */
 
 /* Main Weather Card Updates */
@@ -451,6 +589,23 @@
   font-size: 1.1em;
   font-weight: 600;
   color: #fff;
+}
+
+.wind-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wind-direction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(76, 161, 175, 0.2);
+  border-radius: 50%;
+  border: 1px solid rgba(76, 161, 175, 0.4);
 }
 
 /* Sunrise/Sunset Card */
@@ -703,17 +858,31 @@
 }
 
 .hourly-scroll::-webkit-scrollbar {
-  height: 6px;
+  height: 8px;
 }
 
 .hourly-scroll::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: 4px;
+  margin: 0 10px;
 }
 
 .hourly-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(76, 161, 175, 0.6),
+    rgba(92, 201, 215, 0.6)
+  );
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hourly-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(76, 161, 175, 0.8),
+    rgba(92, 201, 215, 0.8)
+  );
 }
 
 .hourly-item {

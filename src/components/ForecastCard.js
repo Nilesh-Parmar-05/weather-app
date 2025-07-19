@@ -1,10 +1,13 @@
-
 // src/components/ForecastCard.js
 
-import React from 'react';
+import React from "react";
 
 const ForecastCard = ({ forecast }) => {
-  const date = new Date(forecast.dt * 1000).toLocaleDateString();
+  const date = new Date(forecast.dt * 1000).toLocaleDateString("en-IN", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
   const icon = forecast.weather[0].icon;
   const description = forecast.weather[0].description;
   const temp = Math.round(forecast.main.temp);
