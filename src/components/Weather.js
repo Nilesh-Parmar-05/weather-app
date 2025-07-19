@@ -28,10 +28,12 @@ const Weather = () => {
   const fetchWeatherByCoords = useCallback(
     async (lat, lon) => {
       if (!weatherApiKey) {
-        setError("Weather API key is missing. Please check your environment variables.");
+        setError(
+          "Weather API key is missing. Please check your environment variables."
+        );
         return;
       }
-      
+
       setLoading(true);
       setError(null);
 
@@ -90,7 +92,9 @@ const Weather = () => {
         setLoading(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setError("Location access denied. Please enable location services.");
+            setError(
+              "Location access denied. Please enable location services."
+            );
             break;
           case error.POSITION_UNAVAILABLE:
             setError("Location information is unavailable.");
@@ -106,7 +110,7 @@ const Weather = () => {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000 // 5 minutes
+        maximumAge: 300000, // 5 minutes
       }
     );
   };
@@ -118,12 +122,14 @@ const Weather = () => {
         setError("Please enter a city name");
         return;
       }
-      
+
       if (!weatherApiKey) {
-        setError("Weather API key is missing. Please check your environment variables.");
+        setError(
+          "Weather API key is missing. Please check your environment variables."
+        );
         return;
       }
-      
+
       setLoading(true);
       setError(null);
 
@@ -226,8 +232,8 @@ const Weather = () => {
             placeholder="Enter city"
           />
           <button onClick={handleSearch}>Get Weather</button>
-          <button 
-            className="gps-button" 
+          <button
+            className="gps-button"
             onClick={getCurrentLocation}
             title="Use my current location"
           >
@@ -265,25 +271,25 @@ const Weather = () => {
 
       {/* Footer */}
       <div className="footer">
-        <span className="developer-name">Nilesh Paarmar</span>
+        <span className="developer-name">Nilesh Parmar</span>
         <span className="separator">|</span>
         <div className="links">
           <a
-            href="https://your-portfolio-link.com"
+            href="https://nileshparmar05.netlify.app/"
             target="_blank"
             rel="noopener noreferrer"
           >
             Portfolio
           </a>
           <a
-            href="https://github.com/your-github-username"
+            href="https://github.com/Nilesh-Parmar-05"
             target="_blank"
             rel="noopener noreferrer"
           >
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/your-linkedin-profile"
+            href="https://www.linkedin.com/in/nilesh030205/"
             target="_blank"
             rel="noopener noreferrer"
           >
