@@ -3,6 +3,8 @@
 import React, { useState, useCallback } from "react";
 import WeatherCard from "./WeatherCard";
 import ForecastCard from "./ForecastCard"; // Import the new component
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import "./Weather.css";
 
 const Weather = () => {
@@ -21,6 +23,93 @@ const Weather = () => {
   // API keys from environment variables
   const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
   const geoapifyApiKey = process.env.REACT_APP_GEOAPIFY_API_KEY;
+
+  // Function to fetch weather by coordinates (GPS)
+  const fetchWeatherByCoords = useCallback(
+    async (lat, lon) => {
+      if (!weatherApiKey) {
+        setError("Weather API key is missing. Please check your environment variables.");
+        return;
+      }
+      
+      setLoading(true);
+      setError(null);
+
+      try {
+        const weatherResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`
+        );
+        if (!weatherResponse.ok) {
+          throw new Error("Weather data not found for your location");
+        }
+        const weatherData = await weatherResponse.json();
+        setWeather(weatherData);
+        setCity(weatherData.name);
+
+        // Fetch forecast data by coordinates
+        const forecastResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`
+        );
+        if (!forecastResponse.ok) {
+          throw new Error("Forecast data not found");
+        }
+        const forecastData = await forecastResponse.json();
+        const dailyForecasts = {};
+        forecastData.list.forEach((item) => {
+          const date = new Date(item.dt * 1000).toLocaleDateString();
+          if (!dailyForecasts[date]) {
+            dailyForecasts[date] = item;
+          }
+        });
+        setForecast(Object.values(dailyForecasts).slice(1, 6));
+      } catch (error) {
+        setError(error.message);
+        setWeather(null);
+        setForecast([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [weatherApiKey]
+  );
+
+  // Function to get user's current location
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoords(latitude, longitude);
+      },
+      (error) => {
+        setLoading(false);
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            setError("Location access denied. Please enable location services.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setError("Location information is unavailable.");
+            break;
+          case error.TIMEOUT:
+            setError("Location request timed out.");
+            break;
+          default:
+            setError("An unknown error occurred while retrieving location.");
+            break;
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  };
 
   // Function to fetch weather data from the API
   const fetchWeather = useCallback(
@@ -137,6 +226,13 @@ const Weather = () => {
             placeholder="Enter city"
           />
           <button onClick={handleSearch}>Get Weather</button>
+          <button 
+            className="gps-button" 
+            onClick={getCurrentLocation}
+            title="Use my current location"
+          >
+            <FontAwesomeIcon icon={faLocationArrow} />
+          </button>
           {showSuggestions && suggestions.length > 0 && (
             <ul className="suggestions-list">
               {suggestions.map((suggestion) => (

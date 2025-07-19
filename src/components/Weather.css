@@ -79,6 +79,28 @@
   background-color: #5cc9d7;
 }
 
+.gps-button {
+  padding: 15px 20px !important;
+  border: none !important;
+  background-color: #2ecc71 !important;
+  color: white !important;
+  border-radius: 30px !important;
+  cursor: pointer !important;
+  margin-left: 10px !important;
+  transition: all 0.3s !important;
+  font-size: 1.1em !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 50px !important;
+  height: 50px !important;
+}
+
+.gps-button:hover {
+  background-color: #27ae60 !important;
+  transform: scale(1.05);
+}
+
 .suggestions-list {
   position: absolute;
   top: 110%;
@@ -173,19 +195,19 @@
 
 .forecast-section h2 {
   margin-top: 0;
-  margin-bottom: 15px; /* Reduced margin */
-  font-size: 1.4em; /* Reduced size */
+  margin-bottom: 10px; /* Further reduced margin */
+  font-size: 1.3em; /* Further reduced size */
 }
 
 .forecast-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px; /* Reduced padding */
+  padding: 8px; /* Further reduced padding */
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px; /* Slightly smaller radius */
+  border-radius: 10px; /* Smaller radius */
   text-align: left;
-  margin-bottom: 8px; /* Reduced margin */
+  margin-bottom: 6px; /* Further reduced margin */
 }
 
 .forecast-card:last-child {
@@ -193,23 +215,23 @@
 }
 
 .forecast-card h3 {
-  font-size: 1.1em;
+  font-size: 1em; /* Further reduced */
   margin: 0;
 }
 
 .forecast-card img {
-  width: 50px; /* Reduced size */
-  height: 50px; /* Reduced size */
+  width: 40px; /* Further reduced size */
+  height: 40px; /* Further reduced size */
 }
 
 .forecast-card .temperature {
-  font-size: 1.1em; /* Reduced size */
+  font-size: 1em; /* Further reduced size */
   font-weight: bold;
   margin: 0;
 }
 
 .forecast-card .description {
-  font-size: 0.85em; /* Reduced size */
+  font-size: 0.8em; /* Further reduced size */
   color: #bdc3c7;
   margin: 0;
 }
@@ -232,7 +254,12 @@
   }
 
   .search-bar input {
-    width: 300px;
+    width: 250px;
+  }
+
+  .gps-button {
+    padding: 12px 16px !important;
+    font-size: 1.1em !important;
   }
 
   .weather-app-container.active .search-container {
@@ -254,7 +281,13 @@
 
 @media (max-width: 480px) {
   .search-bar input {
-    width: 250px;
+    width: 200px;
+  }
+
+  .gps-button {
+    padding: 10px 14px !important;
+    font-size: 1em !important;
+    margin-left: 8px !important;
   }
 
   .weather-content {

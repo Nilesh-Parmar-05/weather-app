@@ -1,7 +1,6 @@
-
 // src/components/WeatherCard.js
 
-import React from 'react';
+import React from "react";
 
 const WeatherCard = ({ weather }) => {
   if (!weather) {
@@ -21,7 +20,7 @@ const WeatherCard = ({ weather }) => {
           src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
           alt={description}
         />
-        <p className="temperature">{temp}°C</p>
+        <p className="temperature">{Math.round(temp)}°C</p>
         <p className="description">{description}</p>
         <p>Humidity: {humidity}%</p>
       </div>
