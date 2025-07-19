@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# Weather Forecast App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive weather forecast application built with React that provides current weather conditions and 5-day forecasts for cities worldwide.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 🌤️ Current weather conditions with detailed information
+- 📅 5-day weather forecast
+- 🔍 City search with autocomplete suggestions
+- 📱 Fully responsive design for all devices
+- 🎨 Beautiful glassmorphism UI design
+- ⚡ Smooth animations and transitions
 
-### `npm start`
+## Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Weather App Screenshot](screenshot.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- React 19.1.0
+- OpenWeatherMap API for weather data
+- Geoapify API for location autocomplete
+- CSS3 with modern features (backdrop-filter, flexbox, grid)
+- Responsive design principles
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Setup Instructions
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (version 14 or higher)
+- npm or yarn package manager
+- API keys from OpenWeatherMap and Geoapify
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/weather-forecast-app.git
+   cd weather-forecast-app
+   ```
 
-### `npm run eject`
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Set up environment variables**
+   - Copy `.env.example` to `.env`
+   ```bash
+   cp .env.example .env
+   ```
+   - Open `.env` and add your API keys:
+   ```
+   REACT_APP_WEATHER_API_KEY=your_openweathermap_api_key_here
+   REACT_APP_GEOAPIFY_API_KEY=your_geoapify_api_key_here
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Get API Keys**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   **OpenWeatherMap API:**
+   - Visit [OpenWeatherMap](https://openweathermap.org/api)
+   - Sign up for a free account
+   - Generate an API key
+   - Add it to your `.env` file as `REACT_APP_WEATHER_API_KEY`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   **Geoapify API (for autocomplete):**
+   - Visit [Geoapify](https://www.geoapify.com/)
+   - Sign up for a free account
+   - Generate an API key
+   - Add it to your `.env` file as `REACT_APP_GEOAPIFY_API_KEY`
 
-## Learn More
+5. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+6. **Open your browser**
+   - Navigate to `http://localhost:3000`
+   - The app should now be running!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
 
-### Code Splitting
+1. **Search for a city**: Type in the search bar to get autocomplete suggestions
+2. **Select a city**: Click on a suggestion or press Enter to search
+3. **View weather**: See current conditions on the left and 5-day forecast on the right
+4. **Responsive design**: The layout adapts to different screen sizes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Project Structure
 
-### Analyzing the Bundle Size
+```
+src/
+├── components/
+│   ├── Weather.js          # Main weather component
+│   ├── Weather.css         # Styles for weather component
+│   ├── WeatherCard.js      # Current weather display
+│   └── ForecastCard.js     # Forecast item component
+├── App.js                  # Main app component
+├── App.css                 # Global app styles
+└── index.js               # App entry point
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Environment Variables
 
-### Making a Progressive Web App
+The app requires the following environment variables:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- `REACT_APP_WEATHER_API_KEY`: Your OpenWeatherMap API key
+- `REACT_APP_GEOAPIFY_API_KEY`: Your Geoapify API key for location autocomplete
 
-### Advanced Configuration
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-### Deployment
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### `npm run build` fails to minify
+## Developer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Nilesh Paarmar**
+- Portfolio: [Your Portfolio Link]
+- GitHub: [Your GitHub Profile]
+- LinkedIn: [Your LinkedIn Profile]
+
+## Acknowledgments
+
+- Weather data provided by [OpenWeatherMap](https://openweathermap.org/)
+- Location autocomplete by [Geoapify](https://www.geoapify.com/)
+- Icons and weather information courtesy of OpenWeatherMap
+
+---
+
+⭐ If you found this project helpful, please give it a star!
