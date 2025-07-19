@@ -2,7 +2,10 @@
 
 import React, { useState, useCallback } from "react";
 import WeatherCard from "./WeatherCard";
-import ForecastCard from "./ForecastCard"; // Import the new component
+import ForecastCard from "./ForecastCard";
+import UVIndex from "./UVIndex";
+import AirQuality from "./AirQuality";
+import HourlyForecast from "./HourlyForecast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import "./Weather.css";
@@ -19,6 +22,9 @@ const Weather = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [forecast, setForecast] = useState([]); // New state for forecast
+  const [uvIndex, setUvIndex] = useState(null); // UV Index data
+  const [aqi, setAqi] = useState(null); // Air Quality Index data
+  const [hourlyForecast, setHourlyForecast] = useState([]); // Hourly forecast data
 
   // API keys from environment variables
   const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -64,10 +70,42 @@ const Weather = () => {
           }
         });
         setForecast(Object.values(dailyForecasts).slice(1, 6));
+        setHourlyForecast(forecastData.list);
+
+        // Fetch UV Index data
+        try {
+          const uvResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`
+          );
+          if (uvResponse.ok) {
+            const uvData = await uvResponse.json();
+            setUvIndex(uvData.value);
+          }
+        } catch (error) {
+          console.warn("UV Index data not available:", error);
+          setUvIndex(null);
+        }
+
+        // Fetch Air Quality data
+        try {
+          const aqiResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`
+          );
+          if (aqiResponse.ok) {
+            const aqiData = await aqiResponse.json();
+            setAqi(aqiData.list[0]);
+          }
+        } catch (error) {
+          console.warn("Air Quality data not available:", error);
+          setAqi(null);
+        }
       } catch (error) {
         setError(error.message);
         setWeather(null);
         setForecast([]);
+        setUvIndex(null);
+        setAqi(null);
+        setHourlyForecast([]);
       } finally {
         setLoading(false);
       }
@@ -144,6 +182,9 @@ const Weather = () => {
         setWeather(weatherData);
         setCity(weatherData.name); // Set city to the official name
 
+        // Get coordinates for additional API calls
+        const { lat, lon } = weatherData.coord;
+
         // Fetch forecast data
         const forecastResponse = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?q=${selectedCity}&appid=${weatherApiKey}&units=metric`
@@ -161,11 +202,43 @@ const Weather = () => {
           }
         });
         setForecast(Object.values(dailyForecasts).slice(1, 6)); // Get next 5 days, skipping today
+        setHourlyForecast(forecastData.list);
+
+        // Fetch UV Index data
+        try {
+          const uvResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`
+          );
+          if (uvResponse.ok) {
+            const uvData = await uvResponse.json();
+            setUvIndex(uvData.value);
+          }
+        } catch (error) {
+          console.warn("UV Index data not available:", error);
+          setUvIndex(null);
+        }
+
+        // Fetch Air Quality data
+        try {
+          const aqiResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`
+          );
+          if (aqiResponse.ok) {
+            const aqiData = await aqiResponse.json();
+            setAqi(aqiData.list[0]);
+          }
+        } catch (error) {
+          console.warn("Air Quality data not available:", error);
+          setAqi(null);
+        }
       } catch (error) {
         setError(error.message);
         // If the new search fails, clear the old data to reset the UI
         setWeather(null);
         setForecast([]);
+        setUvIndex(null);
+        setAqi(null);
+        setHourlyForecast([]);
       } finally {
         setLoading(false);
       }
@@ -258,14 +331,30 @@ const Weather = () => {
       {error && <p className="error-message">{error}</p>}
 
       <div className="weather-content">
-        {weather && <WeatherCard weather={weather} />}
-        {forecast.length > 0 && (
-          <div className="forecast-section">
-            <h2>5-Day Forecast</h2>
-            {forecast.map((dayForecast) => (
-              <ForecastCard key={dayForecast.dt} forecast={dayForecast} />
-            ))}
-          </div>
+        {weather && (
+          <>
+            <WeatherCard weather={weather} uvIndex={uvIndex} aqi={aqi} />
+            
+            <div className="additional-info">
+              <UVIndex uvIndex={uvIndex} />
+              <AirQuality aqi={aqi} />
+            </div>
+
+            {hourlyForecast.length > 0 && (
+              <HourlyForecast hourlyData={hourlyForecast} />
+            )}
+
+            {forecast.length > 0 && (
+              <div className="forecast-section">
+                <h2>5-Day Forecast</h2>
+                <div className="forecast-grid">
+                  {forecast.map((dayForecast) => (
+                    <ForecastCard key={dayForecast.dt} forecast={dayForecast} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
