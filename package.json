@@ -16,7 +16,6 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://Nilesh-Parmar-05.github.io/weather-app",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
